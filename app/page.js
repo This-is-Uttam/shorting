@@ -67,8 +67,16 @@ export default function Home() {
     <div className="bg-[url('/bg.jpg')] bg-cover bg-center h-screen flex justify-center items-center">
 
       <div className="backdrop-blur-md border border-white outline outline-yellow-300 w-fit m-auto p-8 rounded-3xl">
-        <div className="bg-gradient-to-r from-yellow-600  via-[#ffd700] to-[#5d1a00] bg-clip-text text-transparent text-[50px] font-bold text-center">
-          Shorting
+        <div className="flex gap-3 justify-center items-center">
+          {/* logo */}
+          <div className="size-16">
+
+            <img src="/shorting-link.png" alt="" width={80} height={10} />
+          </div>
+          {/* App Name */}
+          <div className="bg-gradient-to-r from-yellow-600  via-[#ffd700] to-[#f24f0e] bg-clip-text text-transparent text-[50px] font-bold text-center">
+            Shorting Link
+          </div>
         </div>
         <div className="italic text-white text-sm text-center">Make your every link short and easy to read.</div>
 
