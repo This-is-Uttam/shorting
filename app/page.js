@@ -29,39 +29,49 @@ export default function Home() {
 
 
   const generateUrl = async () => {
-    try {
-      const response = await fetch(generateApi, {
-        method: "POST",
-        body: raw,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
+    if (url === "") {
+      notify("Please enter URL")
+      urlRef.current.focus()
+    } else if (shorturl === "") {
+      notify("Please enter short URL")
+      shortUrlRef.current.focus()
+    } else {
+
+      try {
+        const response = await fetch(generateApi, {
+          method: "POST",
+          body: raw,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log(result)
+
+        if (result.success == true) {
+          setisUrlGenerated(true)
+          notify("Shorting successful!");
+          setFinalUrl(process.env.NEXT_PUBLIC_HOST + shorturl).then(() => {
+            // clear inputs
+            seturl("")
+            setshorturl("")
+          })
+
+
+        } else {
+          notify(`Shorting failed! ${result.message}`);
+        }
+
+
+      } catch (error) {
+        console.error(error.message);
       }
-
-      const result = await response.json();
-      console.log(result)
-
-      if (result.success == true) {
-        setisUrlGenerated(true)
-        notify("Shorting successful!");
-        setFinalUrl(process.env.NEXT_PUBLIC_HOST + shorturl).then(() => {
-          // clear inputs
-          seturl("")
-          setshorturl("")
-        })
-
-
-      } else {
-        notify(`Shorting failed! ${result.message}`);
-      }
-
-
-    } catch (error) {
-      console.error(error.message);
     }
+
   }
 
   return (
@@ -92,15 +102,7 @@ export default function Home() {
             <input onChange={e => { seturl(e.target.value) }} value={url} type="text" id="url" ref={urlRef}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  if (url === "") {
-                    notify("Please enter URL")
-                    urlRef.current.focus()
-                  } else if (shorturl === "") {
-                    notify("Please enter short URL")
-                    shortUrlRef.current.focus()
-                  } else {
-                    generateUrl();
-                  }
+                  generateUrl();
                 }
               }}
               className=" w-full focus:outline-none focus:border-white  px-2.5 py-2.5 rounded-xl m-auto text-white  border-2 border-yellow-500  text-heading  outline-amber-500 focus:ring-yellow-800 shadow-xs placeholder:text-body placeholder:italic placeholder:text-[#b8b6b6]" placeholder="Your original link here..." required />
@@ -117,15 +119,7 @@ export default function Home() {
 
                 <input onChange={e => { setshorturl(e.target.value) }} ref={shortUrlRef} value={shorturl} onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    if (url === "") {
-                      notify("Please enter URL")
-                      urlRef.current.focus()
-                    } else if (shorturl === "") {
-                      notify("Please enter short URL")
-                      shortUrlRef.current.focus()
-                    } else {
-                      generateUrl();
-                    }
+                    generateUrl();
                   }
                 }} type="text" id="shortUrl" className="w-full rounded-xl focus:outline-none focus:border focus:border-0.2 pr-3 pl-0.5 py-2.5  m-auto text-white   text-heading   placeholder:text-body placeholder:italic" placeholder="your-endpoint-here" required />
               </div>
