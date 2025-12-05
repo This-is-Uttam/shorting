@@ -1,3 +1,7 @@
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import clientPromise from "@/lib/mongodb";
 
 export async function POST(request) {
@@ -7,7 +11,7 @@ export async function POST(request) {
     const db = client.db("shorting")
     const collection = db.collection("urls")
 
-     // Check if the short url exists
+    // Check if the short url exists
     const doc = await collection.findOne({shorturl: body.shorturl})
     if(doc){
         return Response.json({success: false, error: true,  message: 'Short URL already exists!' })

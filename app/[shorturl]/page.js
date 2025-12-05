@@ -1,3 +1,7 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const runtime = "nodejs";
+
 import { redirect } from "next/navigation"
 import clientPromise from "@/lib/mongodb";
 import { notFound } from "next/navigation";
@@ -19,7 +23,4 @@ export default async function Page({ params }) {
   else {
     notFound()
   }
-  // const { slug } = await params
-  console.log(`slug: ${shorturl}`)
-  return <div>My Post: {shorturl}</div>
 }

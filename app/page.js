@@ -5,7 +5,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ClipboardDocumentIcon } from '@heroicons/react/24/solid'
 import Link from "next/link";
-import Image from 'next/image';
 
 export default function Home() {
   const [url, seturl] = useState("")
@@ -22,8 +21,9 @@ export default function Home() {
     "shorturl": shorturl
   });
 
-  const copyClipbord = () => {
-    navigator.clipboard.writeText(finalUrl).then(() => notify("Link Copied!"))
+  const copyClipbord = async () => {
+    await navigator.clipboard.writeText(finalUrl)
+    notify("Link Copied!")
 
   }
 
@@ -38,7 +38,7 @@ export default function Home() {
     } else {
 
       try {
-        const response = await fetch(generateApi, {
+        const response = await fetch("/api/generate", {
           method: "POST",
           body: raw,
           headers: {
